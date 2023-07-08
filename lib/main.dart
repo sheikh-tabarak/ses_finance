@@ -1,10 +1,20 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:ses_finance/const.dart';
 import 'package:ses_finance/main_page.dart';
 import 'package:ses_finance/header/header_widget.dart';
 import 'package:ses_finance/pages/login.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+      options: FirebaseOptions(
+    apiKey: "AIzaSyB-HSzcGdP0YQdpnxkxkudVBTgUt1Vwc6o",
+    appId: "1:676853417694:web:adba33cb638c5e284d644f",
+    messagingSenderId: "676853417694",
+    projectId: "ses-finance",
+  ));
+
   runApp(const MyApp());
 }
 

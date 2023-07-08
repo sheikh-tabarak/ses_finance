@@ -4,7 +4,10 @@ import 'package:ses_finance/configurations/BigText.dart';
 import 'package:ses_finance/configurations/SmallText.dart';
 import 'package:ses_finance/const.dart';
 import 'package:ses_finance/models/events.dart';
+import 'package:ses_finance/models/transaction.dart';
+import 'package:ses_finance/pages/loading.dart';
 import 'package:ses_finance/widgets/PrimaryInputField.dart';
+import 'package:ses_finance/widgets/message_bar.dart';
 import 'package:ses_finance/widgets/primary_button.dart';
 
 class AddTransaction extends StatefulWidget {
@@ -16,16 +19,19 @@ class AddTransaction extends StatefulWidget {
 }
 
 class _AddTransactionState extends State<AddTransaction> {
+  bool _isLoading = false;
+  bool _isSuccess = false;
   String? selectedValue;
   List<String> items = [
-    'Amount in (+)',
-    'Amount out (-)',
+    'Add',
+    'Subtract',
   ];
 
   DateTime _selectedDate = DateTime.now();
   TextEditingController _dateCtrl = TextEditingController();
   TextEditingController _titleCtrl = TextEditingController();
   TextEditingController _descCtrl = TextEditingController();
+  TextEditingController _amountCtrl = TextEditingController();
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -54,89 +60,122 @@ class _AddTransactionState extends State<AddTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        BigText(
-            text: "Record Transaction in ${widget.ClickedEvent.Eventtitle}"),
-        SizedBox(
-          height: 15,
-        ),
-        InkWell(
-          onTap: () {
-            _selectDate(context);
-          },
-          child: PrimaryInputField(
-              isDisable: true,
-              isExpanded: true,
-              placeholderText: "Choose the date",
-              PrefixIcon: Icons.date_range,
-              isPassword: false,
-              ErrorMessage: "",
-              TextEditControl: _dateCtrl,
-              onChange: () {}),
-        ),
-        Center(
-          child: Container(
-            padding: EdgeInsets.only(left: 20),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12.0),
-                color: cardBackgroundColor),
-            width: double.infinity,
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton(
-                hint: SmallText(
-                  text: 'Mode of Transaction',
-                ),
-                items: items
-                    .map((item) => DropdownMenuItem<String>(
-                          value: item,
-                          child: Text(
-                            item,
-                            style: const TextStyle(
-                              fontSize: 14,
-                            ),
-                          ),
-                        ))
-                    .toList(),
-                value: selectedValue,
-                onChanged: (value) {
-                  setState(() {
-                    selectedValue = value as String;
-                  });
-                },
+    return _isLoading == true
+        ? Loading(
+            message: "Hold on while we're adding a new Transaction",
+          )
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _isSuccess == true
+                  ? Column(
+                      children: [
+                        MessageBar(
+                          message: "Transaction Added Sucessfully",
+                          message_type: 0,
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                      ],
+                    )
+                  : SizedBox(),
+              BigText(
+                  text:
+                      "Record Transaction in ${widget.ClickedEvent.Eventtitle}"),
+              SizedBox(
+                height: 15,
               ),
-            ),
-          ),
-        ),
-        SizedBox(
-          height: 15,
-        ),
-        PrimaryInputField(
-            isOnlyNumbers: true,
-            isExpanded: true,
-            placeholderText: "Enter Transaction Amount",
-            PrefixIcon: Icons.attach_money,
-            isPassword: false,
-            ErrorMessage: "",
-            TextEditControl: _titleCtrl,
-            onChange: () {}),
-        PrimaryInputField(
-            isExpanded: true,
-            placeholderText: "Enter Transaction Details",
-            PrefixIcon: Icons.description,
-            isPassword: false,
-            ErrorMessage: "",
-            TextEditControl: _descCtrl,
-            onChange: () {}),
-        PrimaryButton(
-            isExpanded: true,
-            TapAction: () {},
-            text: "Record Transaction",
-            color: AppColors.PrimaryColor,
-            icon: Icons.add)
-      ],
-    );
+              InkWell(
+                onTap: () {
+                  _selectDate(context);
+                },
+                child: PrimaryInputField(
+                    isDisable: true,
+                    isExpanded: true,
+                    placeholderText: "Choose the date",
+                    PrefixIcon: Icons.date_range,
+                    isPassword: false,
+                    ErrorMessage: "",
+                    TextEditControl: _dateCtrl,
+                    onChange: () {}),
+              ),
+              Center(
+                child: Container(
+                  padding: EdgeInsets.only(left: 20),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12.0),
+                      color: cardBackgroundColor),
+                  width: double.infinity,
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton(
+                      hint: SmallText(
+                        text: 'Mode of Transaction',
+                      ),
+                      items: items
+                          .map((item) => DropdownMenuItem<String>(
+                                value: item,
+                                child: Text(
+                                  item,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ))
+                          .toList(),
+                      value: selectedValue,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedValue = value as String;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              PrimaryInputField(
+                  isOnlyNumbers: true,
+                  isExpanded: true,
+                  placeholderText: "Enter Transaction Amount",
+                  PrefixIcon: Icons.attach_money,
+                  isPassword: false,
+                  ErrorMessage: "",
+                  TextEditControl: _amountCtrl,
+                  onChange: () {}),
+              PrimaryInputField(
+                  isExpanded: true,
+                  placeholderText: "Enter Transaction Details",
+                  PrefixIcon: Icons.description,
+                  isPassword: false,
+                  ErrorMessage: "",
+                  TextEditControl: _descCtrl,
+                  onChange: () {}),
+              PrimaryButton(
+                  isExpanded: true,
+                  TapAction: () async {
+                    setState(() {
+                      _isLoading = true;
+                    });
+                    await AddNewTransactiontoEvent(
+                        widget.ClickedEvent.EventId,
+                        _selectedDate.toString(),
+                        _descCtrl.text,
+                        double.parse(_amountCtrl.text),
+                        selectedValue.toString());
+
+                    setState(() {
+                      _isLoading = false;
+                      _isSuccess = true;
+                    });
+                  },
+                  text: "Record Transaction",
+                  color: AppColors.PrimaryColor,
+                  icon: Icons.add)
+            ],
+          );
     ;
   }
 }
