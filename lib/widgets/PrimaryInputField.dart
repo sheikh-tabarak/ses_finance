@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ses_finance/configurations/SmallText.dart';
 import 'package:ses_finance/const.dart';
 
@@ -9,6 +10,9 @@ class PrimaryInputField extends StatelessWidget {
   final String ErrorMessage;
   final TextEditingController TextEditControl;
   final Function onChange;
+  bool isExpanded;
+  bool isOnlyNumbers;
+  bool isDisable;
 
   PrimaryInputField(
       {super.key,
@@ -17,16 +21,28 @@ class PrimaryInputField extends StatelessWidget {
       required this.isPassword,
       required this.ErrorMessage,
       required this.TextEditControl,
-      required this.onChange});
+      required this.onChange,
+      this.isExpanded = false,
+      this.isDisable = false,
+      this.isOnlyNumbers = false});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 300,
+      width: isExpanded == false ? 300 : double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TextField(
+            keyboardType:
+                isOnlyNumbers ? TextInputType.number : TextInputType.text,
+            inputFormatters: isOnlyNumbers
+                ? <TextInputFormatter>[
+                    FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                    FilteringTextInputFormatter.digitsOnly
+                  ]
+                : [],
+            enabled: isDisable == true ? false : true,
             onChanged: (value) => onChange(),
             // onChanged: (value) => onChange,
             controller: TextEditControl,

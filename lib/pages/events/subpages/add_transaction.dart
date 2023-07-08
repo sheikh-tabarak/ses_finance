@@ -1,17 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:ses_finance/configurations/AppColors.dart';
 import 'package:ses_finance/configurations/BigText.dart';
+import 'package:ses_finance/configurations/SmallText.dart';
+import 'package:ses_finance/const.dart';
+import 'package:ses_finance/models/events.dart';
 import 'package:ses_finance/widgets/PrimaryInputField.dart';
 import 'package:ses_finance/widgets/primary_button.dart';
 
-class AddEvent extends StatefulWidget {
-  const AddEvent({super.key});
+class AddTransaction extends StatefulWidget {
+  final Event ClickedEvent;
+  AddTransaction({super.key, required this.ClickedEvent});
 
   @override
-  State<AddEvent> createState() => _AddEventState();
+  State<AddTransaction> createState() => _AddTransactionState();
 }
 
-class _AddEventState extends State<AddEvent> {
+class _AddTransactionState extends State<AddTransaction> {
+  String? selectedValue;
+  List<String> items = [
+    'Amount in (+)',
+    'Amount out (-)',
+  ];
+
   DateTime _selectedDate = DateTime.now();
   TextEditingController _dateCtrl = TextEditingController();
   TextEditingController _titleCtrl = TextEditingController();
@@ -47,7 +57,8 @@ class _AddEventState extends State<AddEvent> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        BigText(text: "Add New Event"),
+        BigText(
+            text: "Record Transaction in ${widget.ClickedEvent.Eventtitle}"),
         SizedBox(
           height: 15,
         ),
@@ -65,17 +76,54 @@ class _AddEventState extends State<AddEvent> {
               TextEditControl: _dateCtrl,
               onChange: () {}),
         ),
+        Center(
+          child: Container(
+            padding: EdgeInsets.only(left: 20),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12.0),
+                color: cardBackgroundColor),
+            width: double.infinity,
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton(
+                hint: SmallText(
+                  text: 'Mode of Transaction',
+                ),
+                items: items
+                    .map((item) => DropdownMenuItem<String>(
+                          value: item,
+                          child: Text(
+                            item,
+                            style: const TextStyle(
+                              fontSize: 14,
+                            ),
+                          ),
+                        ))
+                    .toList(),
+                value: selectedValue,
+                onChanged: (value) {
+                  setState(() {
+                    selectedValue = value as String;
+                  });
+                },
+              ),
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 15,
+        ),
         PrimaryInputField(
+            isOnlyNumbers: true,
             isExpanded: true,
-            placeholderText: "Enter Event Title",
-            PrefixIcon: Icons.title_outlined,
+            placeholderText: "Enter Transaction Amount",
+            PrefixIcon: Icons.attach_money,
             isPassword: false,
             ErrorMessage: "",
             TextEditControl: _titleCtrl,
             onChange: () {}),
         PrimaryInputField(
             isExpanded: true,
-            placeholderText: "Enter Event Description",
+            placeholderText: "Enter Transaction Details",
             PrefixIcon: Icons.description,
             isPassword: false,
             ErrorMessage: "",
@@ -84,10 +132,11 @@ class _AddEventState extends State<AddEvent> {
         PrimaryButton(
             isExpanded: true,
             TapAction: () {},
-            text: "Add Event",
+            text: "Record Transaction",
             color: AppColors.PrimaryColor,
             icon: Icons.add)
       ],
     );
+    ;
   }
 }

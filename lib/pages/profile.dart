@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ses_finance/configurations/BigText.dart';
+import 'package:ses_finance/configurations/SmallText.dart';
 import 'package:ses_finance/const.dart';
 import 'package:ses_finance/responsive.dart';
 
@@ -20,36 +22,75 @@ class Profile extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(12.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(
-                height: 50,
+                height: 20,
+              ),
+
+              BigText(
+                text: "Hierarchy Details",
+                color: Colors.white,
+              ),
+              const SizedBox(
+                height: 20,
               ),
               Image.asset(
-                "assets/images/avatar.png",
+                "assets/images/hierarchy.jpg",
               ),
+              const SizedBox(
+                height: 20,
+              ),
+              SmallText(
+                text: "Coordinator: ",
+                size: 12,
+                color: Theme.of(context).primaryColor,
+              ),
+              BigText(
+                text: "Mr. Adeel Shehzad",
+                color: Colors.white,
+              ),
+              SizedBox(
+                height: 2,
+              ),
+
               const SizedBox(
                 height: 15,
               ),
-              const Text(
-                "Summer",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              SmallText(
+                text: "President: ",
+                size: 12,
+                color: Theme.of(context).primaryColor,
               ),
-              const SizedBox(
+              BigText(
+                text: "Hamza Naveed",
+                color: Colors.white,
+              ),
+              SizedBox(
                 height: 2,
               ),
-              Text(
-                "Edit health details",
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Theme.of(context).primaryColor,
-                ),
+
+              const SizedBox(
+                height: 15,
               ),
-              Padding(
-                  padding:
-                      EdgeInsets.all(Responsive.isMobile(context) ? 15 : 20.0),
-                  child: Text("Weight Height card")
-                  //const WeightHeightBloodCard(),
-                  ),
+              SmallText(
+                text: "Finance Secratory: ",
+                size: 12,
+                color: Theme.of(context).primaryColor,
+              ),
+              BigText(
+                text: "Muhammad Tabarak",
+                color: Colors.white,
+              ),
+              SizedBox(
+                height: 2,
+              ),
+
+              // Text(
+              //   "Mr. Adeel Shehzad",
+              //   style: TextStyle(),
+              // ),
+
               SizedBox(
                 height: Responsive.isMobile(context) ? 20 : 40,
               ),

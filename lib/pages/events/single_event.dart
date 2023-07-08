@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:ses_finance/models/events.dart';
 
 class SingleEvent extends StatefulWidget {
-  const SingleEvent({super.key});
+  final Event ClickedEvent;
+  SingleEvent({super.key, required this.ClickedEvent});
 
   @override
   State<SingleEvent> createState() => _SingleEventState();

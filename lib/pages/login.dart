@@ -86,7 +86,7 @@ class _LoginState extends State<Login> {
             ErrorMessage: _usernameError,
           ),
           SizedBox(
-            height: 10,
+            height: 5,
           ),
           PrimaryInputField(
             onChange: () {
@@ -101,7 +101,7 @@ class _LoginState extends State<Login> {
             ErrorMessage: _passwordError,
           ),
           SizedBox(
-            height: 10,
+            height: 5,
           ),
           PrimaryButton(
               TapAction: () {

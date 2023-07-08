@@ -9,6 +9,8 @@ class PrimaryButton extends StatelessWidget {
   final Color color;
   final IconData icon;
   final double ButtonRadius;
+  bool isExpanded;
+
 //  final double marginValue;
   double padding;
 
@@ -20,14 +22,15 @@ class PrimaryButton extends StatelessWidget {
       required this.icon,
       this.ButtonRadius = 10,
       //  this.marginValue = 12,
-      this.padding = 12});
+      this.padding = 12,
+      this.isExpanded = false});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => TapAction(),
       child: Container(
-        width: 300,
+        width: isExpanded == false ? 300 : double.infinity,
         //    height:double.nan,
 
         alignment: Alignment.center,

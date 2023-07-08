@@ -47,40 +47,13 @@ class _MenuState extends State<Menu> {
             child: Column(
           children: [
             SizedBox(
-              height: Responsive.isMobile(context) ? 20 : 40,
+              height: Responsive.isMobile(context) ? 10 : 20,
             ),
-            // CircleAvatar(
-            //     radius: 30,
-            //     //  backgroundColor: Colors.white,
-            //     child:
 
-            Row(
-              children: [
-                Image(
-                  image: AssetImage('assets/images/avatar.png'),
-                  width: 30,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 5),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      BigText(
-                        //   isCentre: false,
-                        text: "Software Engineering Society",
-                        size: 12,
-                        color: Colors.white,
-                      ),
-                      SmallText(
-                        //     iscentre: false,
-                        text: "Arfa Kareem Block, university of Gujrat",
-                        size: 10,
-                        color: const Color.fromARGB(255, 202, 202, 202),
-                      )
-                    ],
-                  ),
-                )
-              ],
+            BigText(
+              text: "Menu",
+              color: Colors.white,
+              size: 20,
             ),
 
             SizedBox(
@@ -123,6 +96,20 @@ class _MenuState extends State<Menu> {
               leading: Icon(Icons.add),
               title: SmallText(
                 text: "Create Event",
+                color: Colors.white,
+              ),
+            ),
+
+            ListTile(
+              onTap: () {
+                setState(() {
+                  selected = 3;
+                  return widget.TapAction(selected);
+                });
+              },
+              leading: Icon(Icons.notes),
+              title: SmallText(
+                text: "Notes",
                 color: Colors.white,
               ),
             ),

@@ -14,7 +14,7 @@ class BigText extends StatelessWidget {
 
   BigText({
     Key? key,
-    this.color = const Color.fromARGB(255, 0, 0, 0),
+    this.color = Colors.white,
     required this.text,
     this.size = 0,
     this.isCentre = false,

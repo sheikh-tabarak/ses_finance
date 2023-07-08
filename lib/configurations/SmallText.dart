@@ -14,7 +14,7 @@ class SmallText extends StatelessWidget {
 
   SmallText({
     Key? key,
-    this.color = const Color.fromARGB(255, 104, 104, 104),
+    this.color = const Color.fromARGB(255, 228, 228, 228),
     required this.text,
     this.size = 12,
     this.weight = FontWeight.w400,

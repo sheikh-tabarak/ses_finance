@@ -4,6 +4,8 @@ import 'package:ses_finance/header/header_widget.dart';
 import 'package:ses_finance/pages/events/add_event.dart';
 import 'package:ses_finance/pages/events/all_events.dart';
 import 'package:ses_finance/pages/dashboard.dart';
+import 'package:ses_finance/pages/events/single_event.dart';
+import 'package:ses_finance/pages/notes.dart';
 import 'package:ses_finance/responsive.dart';
 
 class HomePage extends StatefulWidget {
@@ -35,11 +37,22 @@ class _HomePageState extends State<HomePage> {
                 height: Responsive.isMobile(context) ? 5 : 18,
               ),
               Header(scaffoldKey: widget.scaffoldKey),
-              widget.PageIndex == 0
-                  ? Dashboard()
-                  : widget.PageIndex == 1
-                      ? AllEvents()
-                      : AddEvent(),
+
+              Padding(
+                padding: EdgeInsets.all(20),
+                child: widget.PageIndex == 0
+                    ? Dashboard()
+                    : widget.PageIndex == 1
+                        ? AllEvents(
+                            Event_Index: 0,
+                          )
+                        // : widget.PageIndex == 11
+                        //     ? SingleEvent()
+                        : widget.PageIndex == 3
+                            ? Notes()
+                            : AddEvent(),
+              ),
+
               _height(context),
               // const ActivityDetailsCard(),
               _height(context),
