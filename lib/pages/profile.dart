@@ -50,7 +50,7 @@ class Profile extends StatelessWidget {
                 text: "Mr. Adeel Shehzad",
                 color: Colors.white,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 2,
               ),
 
@@ -66,7 +66,7 @@ class Profile extends StatelessWidget {
                 text: "Hamza Naveed",
                 color: Colors.white,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 2,
               ),
 
@@ -82,7 +82,7 @@ class Profile extends StatelessWidget {
                 text: "Muhammad Tabarak",
                 color: Colors.white,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 2,
               ),
 

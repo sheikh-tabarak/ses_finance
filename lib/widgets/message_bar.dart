@@ -1,4 +1,5 @@
-import 'package:flutter/foundation.dart';
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:ses_finance/configurations/SmallText.dart';
 
@@ -6,7 +7,8 @@ class MessageBar extends StatelessWidget {
   final String message;
   final int message_type;
 
-  MessageBar({super.key, required this.message, required this.message_type});
+  const MessageBar(
+      {super.key, required this.message, required this.message_type});
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +19,9 @@ class MessageBar extends StatelessWidget {
               : message_type == 1
                   ? Colors.red
                   : message_type == 2
-                      ? Color.fromARGB(255, 208, 187, 0)
+                      ? const Color.fromARGB(255, 208, 187, 0)
                       : Colors.blue),
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
       width: double.infinity,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -31,7 +33,7 @@ class MessageBar extends StatelessWidget {
                   : message_type == 2
                       ? Icons.warning
                       : Icons.square),
-          SizedBox(
+          const SizedBox(
             width: 20,
           ),
           SmallText(text: message)

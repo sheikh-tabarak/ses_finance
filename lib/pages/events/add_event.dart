@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_final_fields
+
 import 'package:flutter/material.dart';
 import 'package:ses_finance/configurations/AppColors.dart';
 import 'package:ses_finance/configurations/BigText.dart';
@@ -42,7 +44,7 @@ class _AddEventState extends State<AddEvent> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    super.initState();
     _dateCtrl.text =
         '${_selectedDate.day.toString()} / ${_selectedDate.month.toString()} / ${_selectedDate.year.toString()}';
   }
@@ -57,7 +59,7 @@ class _AddEventState extends State<AddEvent> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _isSuccess == true
-                  ? Column(
+                  ? const Column(
                       children: [
                         MessageBar(
                           message: "Event Added Sucessfully",
@@ -68,9 +70,9 @@ class _AddEventState extends State<AddEvent> {
                         ),
                       ],
                     )
-                  : SizedBox(),
+                  : const SizedBox(),
               BigText(text: "Add New Event"),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               InkWell(

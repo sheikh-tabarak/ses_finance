@@ -1,9 +1,12 @@
+// ignore_for_file: non_constant_identifier_names, must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:ses_finance/configurations/AppColors.dart';
 import 'package:ses_finance/configurations/Dimensions.dart';
 import 'package:ses_finance/configurations/SmallText.dart';
 
 class PrimaryButton extends StatelessWidget {
+  bool isLoading;
   final Function TapAction;
   final String text;
   final Color color;
@@ -16,6 +19,7 @@ class PrimaryButton extends StatelessWidget {
 
   PrimaryButton(
       {super.key,
+      this.isLoading = false,
       required this.TapAction,
       required this.text,
       required this.color,
@@ -28,7 +32,7 @@ class PrimaryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => TapAction(),
+      onTap: () => isLoading ? () {} : TapAction(),
       child: Container(
         width: isExpanded == false ? 300 : double.infinity,
         //    height:double.nan,
@@ -41,22 +45,27 @@ class PrimaryButton extends StatelessWidget {
           color: color,
           borderRadius: BorderRadius.circular(ButtonRadius),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              color: Colors.white,
-            ),
-            SizedBox(
-              width: Dimensions.height10,
-            ),
-            SmallText(
-              text: text,
-              color: AppColors.textColor,
-            ),
-          ],
-        ),
+        child: isLoading
+            ? const CircularProgressIndicator(
+                color: Colors.white,
+                strokeWidth: 2,
+              )
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    icon,
+                    color: Colors.white,
+                  ),
+                  SizedBox(
+                    width: Dimensions.height10,
+                  ),
+                  SmallText(
+                    text: text,
+                    color: AppColors.textColor,
+                  ),
+                ],
+              ),
       ),
     );
   }

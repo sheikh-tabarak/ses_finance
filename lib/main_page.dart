@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors_in_immutables, must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:ses_finance/pages/home_page.dart';
 import 'package:ses_finance/pages/profile.dart';
@@ -5,14 +7,16 @@ import 'package:ses_finance/responsive.dart';
 import 'package:ses_finance/widgets/menu.dart';
 
 class MainPage extends StatefulWidget {
-  MainPage({super.key});
+  int homePageIndex;
+  int eventPageIndex;
+  MainPage(
+      {super.key, required this.homePageIndex, required this.eventPageIndex});
 
   @override
   State<MainPage> createState() => _MainPageState();
 }
 
 class _MainPageState extends State<MainPage> {
-  int _pageIndex = 0;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
   @override
@@ -26,45 +30,74 @@ class _MainPageState extends State<MainPage> {
                   scaffoldKey: _scaffoldKey,
                   TapAction: (value) {
                     setState(() {
-                      _pageIndex = value;
+                      widget.homePageIndex = value;
                     });
                     Navigator.pop(context);
-                    print("Page index $value");
+                    //   print("Page index $value");
                   },
                 ))
             : null,
         endDrawer: Responsive.isMobile(context)
             ? SizedBox(
                 width: MediaQuery.of(context).size.width * 0.8,
-                child: Text("This is profile space"))
+                child: const Text("This is profile space"))
             : null,
         body: SafeArea(
-          child: Row(
+          child: Column(
+            //   alignment: Alignment.bottomCenter,
             children: [
-              if (Responsive.isDesktop(context))
-                Expanded(
-                  flex: 3,
-                  child: SizedBox(
-                      height: MediaQuery.of(context).size.height,
-                      child: Menu(
-                          TapAction: (value) {
-                            setState(() {
-                              _pageIndex = value;
-                            });
+              Row(
+                children: [
+                  if (Responsive.isDesktop(context))
+                    Expanded(
+                      flex: 3,
+                      child: SizedBox(
+                          height: MediaQuery.of(context).size.height,
+                          child: Menu(
+                              TapAction: (value) {
+                                setState(() {
+                                  widget.homePageIndex = value;
+                                  if (value == 1) {
+                                    widget.eventPageIndex = 0;
+                                  }
+                                });
 
-                            print("Page index $value");
-                          },
+                                //     print("Page index $value");
+                              },
+                              scaffoldKey: _scaffoldKey)),
+                    ),
+                  Expanded(
+                      flex: 8,
+                      child: HomePage(
+                          homePageIndex: widget.homePageIndex,
+                          eventPageIndex: widget.eventPageIndex,
                           scaffoldKey: _scaffoldKey)),
-                ),
-              Expanded(
-                  flex: 8,
-                  child: HomePage(
-                      PageIndex: _pageIndex, scaffoldKey: _scaffoldKey)),
-              if (!Responsive.isMobile(context))
-                Expanded(
-                  flex: 4,
-                  child: Profile(),
-                ),
+                  if (!Responsive.isMobile(context))
+                    const Expanded(
+                      flex: 4,
+                      child: Profile(),
+                    ),
+                ],
+              ),
+              // Positioned(
+              //   bottom: 0,
+              //   child: Expanded(
+              //     child: Container(
+              //       decoration: BoxDecoration(
+              //         color: Colors.black,
+              //       ),
+              //       padding: const EdgeInsets.all(8.0),
+              //       child: Row(
+              //         mainAxisAlignment: MainAxisAlignment.center,
+              //         children: [
+              //           SmallText(
+              //               text:
+              //                   "2023 Copyrights All Rights Reserved | Developed by Sheikhtabarak")
+              //         ],
+              //       ),
+              //     ),
+              //   ),
+              // )
             ],
           ),
         ));

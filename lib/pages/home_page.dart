@@ -1,18 +1,24 @@
+// ignore_for_file: must_be_immutable, non_constant_identifier_names, no_leading_underscores_for_local_identifiers
+
 import 'package:flutter/material.dart';
-import 'package:ses_finance/configurations/BigText.dart';
 import 'package:ses_finance/header/header_widget.dart';
 import 'package:ses_finance/pages/events/add_event.dart';
 import 'package:ses_finance/pages/events/all_events.dart';
 import 'package:ses_finance/pages/dashboard.dart';
-import 'package:ses_finance/pages/events/single_event.dart';
 import 'package:ses_finance/pages/notes.dart';
 import 'package:ses_finance/responsive.dart';
 
 class HomePage extends StatefulWidget {
-  int PageIndex;
+  int homePageIndex;
+  int eventPageIndex;
+
   final GlobalKey<ScaffoldState> scaffoldKey;
 
-  HomePage({super.key, required this.scaffoldKey, this.PageIndex = 0});
+  HomePage(
+      {super.key,
+      required this.scaffoldKey,
+      required this.homePageIndex,
+      required this.eventPageIndex});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -39,18 +45,18 @@ class _HomePageState extends State<HomePage> {
               Header(scaffoldKey: widget.scaffoldKey),
 
               Padding(
-                padding: EdgeInsets.all(20),
-                child: widget.PageIndex == 0
-                    ? Dashboard()
-                    : widget.PageIndex == 1
+                padding: const EdgeInsets.all(20),
+                child: widget.homePageIndex == 0
+                    ? const Dashboard()
+                    : widget.homePageIndex == 1
                         ? AllEvents(
-                            Event_Index: 0,
+                            Event_Index: widget.eventPageIndex,
                           )
                         // : widget.PageIndex == 11
                         //     ? SingleEvent()
-                        : widget.PageIndex == 3
-                            ? Notes()
-                            : AddEvent(),
+                        : widget.homePageIndex == 3
+                            ? const Notes()
+                            : const AddEvent(),
               ),
 
               _height(context),

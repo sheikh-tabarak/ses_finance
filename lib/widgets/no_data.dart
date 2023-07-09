@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ses_finance/configurations/BigText.dart';
 import 'package:ses_finance/configurations/SmallText.dart';
 
 class NoData extends StatelessWidget {
@@ -8,16 +9,22 @@ class NoData extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      padding: EdgeInsets.all(50),
+      padding: const EdgeInsets.all(50),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Icon(Icons.error),
-          SizedBox(
+          const Icon(Icons.error),
+          const SizedBox(
             height: 20,
           ),
-          SmallText(text: "No Data Available")
+          BigText(text: "No Data Available"),
+          const SizedBox(
+            height: 7,
+          ),
+          SmallText(
+              text:
+                  "Either you are not connected to internet or the required data is empty")
         ],
       ),
     );

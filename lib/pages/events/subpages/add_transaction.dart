@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, prefer_final_fields
+
 import 'package:flutter/material.dart';
 import 'package:ses_finance/configurations/AppColors.dart';
 import 'package:ses_finance/configurations/BigText.dart';
@@ -12,7 +14,7 @@ import 'package:ses_finance/widgets/primary_button.dart';
 
 class AddTransaction extends StatefulWidget {
   final Event ClickedEvent;
-  AddTransaction({super.key, required this.ClickedEvent});
+  const AddTransaction({super.key, required this.ClickedEvent});
 
   @override
   State<AddTransaction> createState() => _AddTransactionState();
@@ -29,7 +31,7 @@ class _AddTransactionState extends State<AddTransaction> {
 
   DateTime _selectedDate = DateTime.now();
   TextEditingController _dateCtrl = TextEditingController();
-  TextEditingController _titleCtrl = TextEditingController();
+  // TextEditingController _titleCtrl = TextEditingController();
   TextEditingController _descCtrl = TextEditingController();
   TextEditingController _amountCtrl = TextEditingController();
 
@@ -38,7 +40,7 @@ class _AddTransactionState extends State<AddTransaction> {
         context: context,
         initialDate: _selectedDate,
         firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
+        lastDate: DateTime.now());
 
     //      dateController.text='${selectedDate.day.toString()} / ${selectedDate.month.toString()} / ${selectedDate.year.toString()}';
 
@@ -53,7 +55,7 @@ class _AddTransactionState extends State<AddTransaction> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    super.initState();
     _dateCtrl.text =
         '${_selectedDate.day.toString()} / ${_selectedDate.month.toString()} / ${_selectedDate.year.toString()}';
   }
@@ -68,7 +70,7 @@ class _AddTransactionState extends State<AddTransaction> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _isSuccess == true
-                  ? Column(
+                  ? const Column(
                       children: [
                         MessageBar(
                           message: "Transaction Added Sucessfully",
@@ -79,11 +81,11 @@ class _AddTransactionState extends State<AddTransaction> {
                         ),
                       ],
                     )
-                  : SizedBox(),
+                  : const SizedBox(),
               BigText(
                   text:
                       "Record Transaction in ${widget.ClickedEvent.Eventtitle}"),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               InkWell(
@@ -102,7 +104,7 @@ class _AddTransactionState extends State<AddTransaction> {
               ),
               Center(
                 child: Container(
-                  padding: EdgeInsets.only(left: 20),
+                  padding: const EdgeInsets.only(left: 20),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12.0),
                       color: cardBackgroundColor),
@@ -133,7 +135,7 @@ class _AddTransactionState extends State<AddTransaction> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               PrimaryInputField(
@@ -176,6 +178,5 @@ class _AddTransactionState extends State<AddTransaction> {
                   icon: Icons.add)
             ],
           );
-    ;
   }
 }

@@ -1,7 +1,11 @@
+// ignore_for_file: must_be_immutable, non_constant_identifier_names, library_private_types_in_public_api, void_checks, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 
 import 'package:ses_finance/configurations/BigText.dart';
 import 'package:ses_finance/configurations/SmallText.dart';
+import 'package:ses_finance/const.dart';
+import 'package:ses_finance/models/user.dart';
 import 'package:ses_finance/pages/login.dart';
 import 'package:ses_finance/responsive.dart';
 
@@ -24,8 +28,6 @@ class _MenuState extends State<Menu> {
 
   @override
   void initState() {
-    // TODO: implement initState
-
     super.initState();
   }
 
@@ -46,19 +48,27 @@ class _MenuState extends State<Menu> {
         child: SingleChildScrollView(
             child: Column(
           children: [
-            SizedBox(
-              height: Responsive.isMobile(context) ? 10 : 20,
+            Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              alignment: Alignment.center,
+              width: double.infinity,
+              decoration: const BoxDecoration(color: cardBackgroundColor),
+              padding: EdgeInsets.only(
+                  top: Responsive.isMobile(context) ? 20 : 30,
+                  bottom: Responsive.isMobile(context) ? 20 : 30),
+              child: BigText(
+                text: "Menu",
+                color: Colors.white,
+                size: 20,
+              ),
             ),
+            // SizedBox(
+            //   height: Responsive.isMobile(context) ? 10 : 20,
+            // ),
 
-            BigText(
-              text: "Menu",
-              color: Colors.white,
-              size: 20,
-            ),
-
-            SizedBox(
-              height: Responsive.isMobile(context) ? 20 : 40,
-            ),
+            // SizedBox(
+            //   height: Responsive.isMobile(context) ? 20 : 40,
+            // ),
             //),
             ListTile(
               onTap: () {
@@ -67,7 +77,7 @@ class _MenuState extends State<Menu> {
                   return widget.TapAction(selected);
                 });
               },
-              leading: Icon(Icons.dashboard),
+              leading: const Icon(Icons.dashboard),
               title: SmallText(
                 text: "Dashboard",
                 color: Colors.white,
@@ -80,7 +90,7 @@ class _MenuState extends State<Menu> {
                   return widget.TapAction(selected);
                 });
               },
-              leading: Icon(Icons.calendar_month),
+              leading: const Icon(Icons.calendar_month),
               title: SmallText(
                 text: "All Events",
                 color: Colors.white,
@@ -93,7 +103,7 @@ class _MenuState extends State<Menu> {
                   return widget.TapAction(selected);
                 });
               },
-              leading: Icon(Icons.add),
+              leading: const Icon(Icons.add),
               title: SmallText(
                 text: "Create Event",
                 color: Colors.white,
@@ -107,18 +117,19 @@ class _MenuState extends State<Menu> {
                   return widget.TapAction(selected);
                 });
               },
-              leading: Icon(Icons.notes),
+              leading: const Icon(Icons.notes),
               title: SmallText(
                 text: "Notes",
                 color: Colors.white,
               ),
             ),
             ListTile(
-              onTap: () {
-                Navigator.pushReplacement(
-                    context, MaterialPageRoute(builder: (context) => Login()));
+              onTap: () async {
+                await signout();
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => const Login()));
               },
-              leading: Icon(Icons.logout),
+              leading: const Icon(Icons.logout),
               title: SmallText(
                 text: "Logout",
                 color: Colors.white,

@@ -1,8 +1,6 @@
-import 'dart:io';
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart' as firebase_core;
-import 'package:firebase_storage/firebase_storage.dart';
 
 var _db = FirebaseFirestore.instance.collection("user").doc("SESSION_2022_23");
 
@@ -77,7 +75,7 @@ Future EditEvent(
 
 Future deleteEvent(String EventId) async {
   await _db.collection("events").doc(EventId).delete().then((value) {
-    print("Event deleted");
+    // print("Event deleted");
   });
 }
 
@@ -86,4 +84,15 @@ Stream<QuerySnapshot<Map<String, dynamic>>> AllEventsData() {
       .collection("events")
       .orderBy("StartDate", descending: true)
       .snapshots();
+}
+
+Future<String?> getEventNamebyId(String EventId) async {
+  String EventName = "N/A";
+  // var currentEventBalance =
+  await _db.collection("events").doc(EventId).get().then((value) {
+    EventName = value["Eventtitle"];
+
+    return EventName;
+  });
+  return null;
 }

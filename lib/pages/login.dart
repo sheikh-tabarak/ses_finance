@@ -1,14 +1,18 @@
+// ignore_for_file: prefer_final_fields, use_build_context_synchronously, deprecated_member_use, unused_field
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ses_finance/configurations/AppColors.dart';
 import 'package:ses_finance/configurations/BigText.dart';
 import 'package:ses_finance/configurations/SmallText.dart';
-import 'package:ses_finance/const.dart';
 import 'package:ses_finance/main_page.dart';
 import 'package:ses_finance/models/user.dart';
 import 'package:ses_finance/pages/loading.dart';
 import 'package:ses_finance/widgets/PrimaryInputField.dart';
+import 'package:ses_finance/widgets/message_bar.dart';
 import 'package:ses_finance/widgets/primary_button.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'dart:async';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -18,7 +22,11 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  bool isLoading = false;
+  String sheikhtabarak = 'https://sheikhtabarak.me/';
+  Future<void>? _launched;
+  bool _isError = false;
+  String _Error = "";
+  bool _isLoading = false;
 
   TextEditingController _usernameCtrl = TextEditingController();
   TextEditingController _passwordCtrl = TextEditingController();
@@ -31,8 +39,8 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    return isLoading == true
-        ? Loading()
+    return _isLoading == true
+        ? Scaffold(body: Loading())
         : Scaffold(
             body: Container(
             alignment: Alignment.center,
@@ -42,12 +50,12 @@ class _LoginState extends State<Login> {
               children: [
                 Column(
                   children: [
-                    Image(
+                    const Image(
                       image: AssetImage('assets/images/avatar.png'),
                       width: 60,
                     ),
 
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     // Padding(
@@ -62,7 +70,7 @@ class _LoginState extends State<Login> {
                       size: 20,
                       color: Colors.white,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     SmallText(
@@ -72,9 +80,23 @@ class _LoginState extends State<Login> {
                       color: const Color.fromARGB(255, 202, 202, 202),
                     ),
 
-                    SizedBox(
+                    const SizedBox(
                       height: 30,
                     ),
+
+                    _isError == true
+                        ? Container(
+                            width: 300,
+                            child: MessageBar(message: _Error, message_type: 1),
+                          )
+                        : const SizedBox(
+                            height: 0,
+                          ),
+
+                    const SizedBox(
+                      height: 15,
+                    ),
+
                     //     ],
                     //   ),
                     // )
@@ -83,80 +105,80 @@ class _LoginState extends State<Login> {
                 PrimaryInputField(
                   onChange: () async {
                     setState(() {
-                      _usernameError = "";
+                      _isError = false;
                     });
                   },
                   TextEditControl: _usernameCtrl,
                   placeholderText: "Username/Email",
                   PrefixIcon: Icons.account_circle,
                   isPassword: false,
-                  ErrorMessage: _usernameError,
+                  ErrorMessage: "",
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
                 PrimaryInputField(
                   onChange: () {
                     setState(() {
-                      _passwordError = "";
+                      _isError = false;
                     });
                   },
                   TextEditControl: _passwordCtrl,
                   placeholderText: "Password",
                   PrefixIcon: Icons.lock,
                   isPassword: true,
-                  ErrorMessage: _passwordError,
+                  ErrorMessage: "",
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
                 PrimaryButton(
                     TapAction: () async {
-                      isLoading = true;
+                      setState(() {
+                        _isLoading = true;
+                      });
 
-                      if (_usernameCtrl.text == "") {
+                      if (_usernameCtrl.text == "" ||
+                          _passwordCtrl.text == "") {
                         setState(() {
-                          isLoading = false;
-                          _usernameError = "Username field can't be empty";
+                          _isLoading = false;
+                          _Error = "Username/Password Empty";
+                          _isError = true;
                         });
-                      } else if (_usernameCtrl.text != "") {
-                        if (_passwordCtrl.text == "") {
-                          //  } else {
-                          setState(() {
-                            isLoading = false;
-                            _passwordError =
-                                "Password for ${_usernameCtrl.text} is incorrect";
-                          });
-                          //  }
-                        } else {
-                          bool isAuthenticated = await signIn(
-                              _usernameCtrl.text, _passwordCtrl.text);
+                      } else {}
+                      // if (_usernameCtrl.text != "" &&
+                      //     await FirebaseAuth.instance.currentUser!.email ==
+                      //         _usernameCtrl.text) {
+                      //   if (_passwordCtrl.text == "") {
+                      //     //  } else {
+                      //     setState(() {
+                      //       _isLoading = false;
+                      //       _passwordError =
+                      //           "Password for ${_usernameCtrl.text} is incorrect";
+                      //     });
+                      //     //  }
+                      //   } else {
+                      bool isAuthenticated =
+                          await signIn(_usernameCtrl.text, _passwordCtrl.text);
 
-                          if (isAuthenticated == true) {
-                            setState(() {
-                              isLoading = false;
-                            });
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MainPage()));
-                          } else {
-                            setState(() {
-                              isLoading = false;
-                            });
-
-                            if (FirebaseAuth.instance.currentUser!.email !=
-                                _usernameCtrl.text) {
-                              setState(() {
-                                _usernameError = "Username desn't exists";
-                              });
-                            } else {
-                              setState(() {
-                                _passwordError = "Password Wrong for this user";
-                              });
-                            }
-                          }
-                        }
+                      if (isAuthenticated == true) {
+                        setState(() {
+                          _isLoading = false;
+                          _isError = false;
+                        });
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MainPage(
+                                      homePageIndex: 0,
+                                      eventPageIndex: 0,
+                                    )));
+                      } else {
+                        setState(() {
+                          _isLoading = false;
+                          _Error = "Username/Password Incorrect";
+                          _isError = true;
+                        });
                       }
                     },
 
@@ -171,8 +193,38 @@ class _LoginState extends State<Login> {
                     text: "Login",
                     color: AppColors.PrimaryColor,
                     icon: Icons.login),
+                const SizedBox(
+                  height: 30,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SmallText(text: "Developed by"),
+                    TextButton(
+                      onPressed: () {
+                        setState(() {
+                          _launched = _launchInBrowser(sheikhtabarak);
+                        });
+                      },
+                      child: SmallText(text: "Muhammad Tabarak"),
+                    ),
+                  ],
+                )
               ],
             ),
           ));
+  }
+
+  Future<void> _launchInBrowser(String url) async {
+    if (await canLaunch(url)) {
+      await launch(
+        url,
+        forceSafariVC: false,
+        forceWebView: false,
+        headers: <String, String>{'my_header_key': 'my_header_value'},
+      );
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }

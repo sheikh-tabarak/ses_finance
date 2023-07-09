@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:ses_finance/configurations/SmallText.dart';
 
@@ -22,11 +24,11 @@ class _LoadingState extends State<Loading> {
         mainAxisAlignment: MainAxisAlignment.center,
         //   crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          CircularProgressIndicator(
+          const CircularProgressIndicator(
             color: Colors.white,
             strokeWidth: 10,
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           SmallText(text: widget.message)

@@ -1,9 +1,12 @@
+// ignore_for_file: non_constant_identifier_names
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ses_finance/configurations/AppColors.dart';
 import 'package:ses_finance/configurations/BigText.dart';
 import 'package:ses_finance/configurations/SmallText.dart';
 import 'package:ses_finance/const.dart';
-import 'package:ses_finance/widgets/PrimaryInputField.dart';
+import 'package:ses_finance/models/user.dart';
 import 'package:ses_finance/widgets/primary_button.dart';
 
 class Notes extends StatefulWidget {
@@ -14,15 +17,27 @@ class Notes extends StatefulWidget {
 }
 
 class _NotesState extends State<Notes> {
+  bool _isLoading = false;
   TextEditingController TextEditControl = TextEditingController();
 
   String ErrorMessage = "";
 
+  void LoadNotes() async {
+    await FirebaseFirestore.instance
+        .collection("user")
+        .doc("SESSION_2022_23")
+        .collection("notes")
+        .doc("ses_notes")
+        .get()
+        .then((value) {
+      TextEditControl.text = value["NotesText"];
+    });
+  }
+
   @override
   void initState() {
-    // TODO: implement initState
-
-    TextEditControl.text = "These are your Old Remainers";
+    LoadNotes();
+    // TextEditControl.text = "These are your Old Remainers";
     super.initState();
   }
 
@@ -33,10 +48,10 @@ class _NotesState extends State<Notes> {
       children: [
         BigText(
             text: "Add your Remainders/Notes/Thoughts/Pendings/Laibilities:"),
-        SizedBox(
+        const SizedBox(
           height: 15,
         ),
-        Container(
+        SizedBox(
           width: double.infinity,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,12 +104,23 @@ class _NotesState extends State<Notes> {
             ],
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         PrimaryButton(
+            isLoading: _isLoading,
             isExpanded: true,
-            TapAction: () {},
+            TapAction: () async {
+              setState(() {
+                _isLoading = true;
+              });
+
+              await updateNotes(TextEditControl.text);
+
+              setState(() {
+                _isLoading = false;
+              });
+            },
             text: "Update Notes",
             color: AppColors.PrimaryColor,
             icon: Icons.update)

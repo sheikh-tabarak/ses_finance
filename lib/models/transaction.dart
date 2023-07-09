@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, avoid_print
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 var _db = FirebaseFirestore.instance.collection("user").doc("SESSION_2022_23");
@@ -36,16 +38,12 @@ class Transaction {
   }
 }
 
-Future AddNewTransactiontoEvent(
-    String _EventId,
-    String TransDate,
-    String _TransactionDescription,
-    double TransAmount,
-    String _TransMode) async {
+Future AddNewTransactiontoEvent(String EventId, String TransDate,
+    String TransactionDescription, double TransAmount, String TransMode) async {
   double TotalIn = 0, TotalOut = 0, GrandTotal = 0;
 
-  var currentEventBalance =
-      await _db.collection("events").doc(_EventId).get().then((value) {
+  // var currentEventBalance =
+  await _db.collection("events").doc(EventId).get().then((value) {
     TotalIn = value["TotalIn"];
     TotalOut = value["TotalOut"];
     GrandTotal = value["GrandTotal"];
@@ -55,30 +53,48 @@ Future AddNewTransactiontoEvent(
   print("Total Out: ${TotalOut.toString()}");
   print("Grand Total: ${GrandTotal.toString()}");
 
-  if (_TransMode == "Add") {
+  if (TransMode == "Add") {
     TotalIn = TotalIn + TransAmount;
-  } else if (_TransMode == "Subtract") {
+  } else if (TransMode == "Subtract") {
     TotalOut = TotalOut + TransAmount;
   }
 
   GrandTotal = TotalIn - TotalOut;
 
-  await _db.collection("events").doc(_EventId).update({
+  await _db.collection("events").doc(EventId).update({
     'GrandTotal': GrandTotal,
     'TotalIn': TotalIn,
     'TotalOut': TotalOut,
   });
 
   final AddNewTransactionRequest =
-      _db.collection("events").doc(_EventId).collection("transaction").doc();
+      _db.collection("events").doc(EventId).collection("transaction").doc();
 
   final NewTransaction = Transaction(
-      EventId: _EventId,
+      EventId: EventId,
       TransactionDate: TransDate,
-      TransactionDescription: _TransactionDescription,
-      TransactionMode: _TransMode,
+      TransactionDescription: TransactionDescription,
+      TransactionMode: TransMode,
       TransactionAmount: TransAmount);
 
   final json = NewTransaction.toJson();
   await AddNewTransactionRequest.set(json);
+}
+
+Stream<QuerySnapshot<Map<String, dynamic>>> AllTransactionofEvent(
+    String EventId) {
+  return _db
+      .collection("events")
+      .doc(EventId)
+      .collection("transaction")
+      .orderBy("TransactionDate", descending: true)
+      .snapshots();
+}
+
+Stream<QuerySnapshot<Map<String, dynamic>>> All_Transactions() {
+  return FirebaseFirestore.instance
+      .collectionGroup("transaction")
+      .orderBy("TransactionDate", descending: true)
+      //  .orderBy("TransactionDate", descending: true)
+      .snapshots();
 }
