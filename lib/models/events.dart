@@ -86,13 +86,13 @@ Stream<QuerySnapshot<Map<String, dynamic>>> AllEventsData() {
       .snapshots();
 }
 
-Future<String?> getEventNamebyId(String EventId) async {
-  String EventName = "N/A";
-  // var currentEventBalance =
-  await _db.collection("events").doc(EventId).get().then((value) {
-    EventName = value["Eventtitle"];
-
-    return EventName;
-  });
-  return null;
-}
+// Future<String?> getEventNamebyId(String EventId) async {
+//   String EventName = "N/A";
+//   // var currentEventBalance =
+//   await _db.collection("events").doc(EventId).get().then((value) {
+//     EventName = value["Eventtitle"];
+//     print(EventName);
+//     return EventName;
+//   });
+//   // return null;
+// }

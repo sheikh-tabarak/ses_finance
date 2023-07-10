@@ -21,13 +21,17 @@ class AddTransaction extends StatefulWidget {
 }
 
 class _AddTransactionState extends State<AddTransaction> {
-  bool _isLoading = false;
-  bool _isSuccess = false;
-  String? selectedValue;
   List<String> items = [
     'Add',
     'Subtract',
   ];
+  bool _isLoading = false;
+  bool _isSuccess = false;
+  String selectedValue = "Add";
+
+  bool _descEmpty = false;
+  bool _amountEmpty = false;
+  // bool _modeEmpty = false;
 
   DateTime _selectedDate = DateTime.now();
   TextEditingController _dateCtrl = TextEditingController();
@@ -128,6 +132,7 @@ class _AddTransactionState extends State<AddTransaction> {
                       value: selectedValue,
                       onChanged: (value) {
                         setState(() {
+                          //    _modeEmpty = false;
                           selectedValue = value as String;
                         });
                       },
@@ -144,34 +149,57 @@ class _AddTransactionState extends State<AddTransaction> {
                   placeholderText: "Enter Transaction Amount",
                   PrefixIcon: Icons.attach_money,
                   isPassword: false,
-                  ErrorMessage: "",
+                  ErrorMessage:
+                      _amountEmpty == true ? "Amount can't be empty" : "",
                   TextEditControl: _amountCtrl,
-                  onChange: () {}),
+                  onChange: () {
+                    setState(() {
+                      _amountEmpty = false;
+                    });
+                  }),
               PrimaryInputField(
                   isExpanded: true,
                   placeholderText: "Enter Transaction Details",
                   PrefixIcon: Icons.description,
                   isPassword: false,
-                  ErrorMessage: "",
+                  ErrorMessage:
+                      _descEmpty == true ? "Description can't be empty" : "",
                   TextEditControl: _descCtrl,
-                  onChange: () {}),
+                  onChange: () {
+                    setState(() {
+                      _descEmpty = false;
+                    });
+                  }),
               PrimaryButton(
                   isExpanded: true,
                   TapAction: () async {
-                    setState(() {
-                      _isLoading = true;
-                    });
-                    await AddNewTransactiontoEvent(
-                        widget.ClickedEvent.EventId,
-                        _selectedDate.toString(),
-                        _descCtrl.text,
-                        double.parse(_amountCtrl.text),
-                        selectedValue.toString());
+                    if (_amountCtrl.text == "" || _descCtrl.text == "") {
+                      if (_amountCtrl.text == "") {
+                        setState(() {
+                          _amountEmpty = true;
+                        });
+                      }
+                      if (_descCtrl.text == "") {
+                        setState(() {
+                          _descEmpty = true;
+                        });
+                      }
+                    } else {
+                      setState(() {
+                        _isLoading = true;
+                      });
+                      await AddNewTransactiontoEvent(
+                          widget.ClickedEvent.EventId,
+                          _selectedDate.toString(),
+                          _descCtrl.text,
+                          double.parse(_amountCtrl.text),
+                          selectedValue.toString());
 
-                    setState(() {
-                      _isLoading = false;
-                      _isSuccess = true;
-                    });
+                      setState(() {
+                        _isLoading = false;
+                        _isSuccess = true;
+                      });
+                    }
                   },
                   text: "Record Transaction",
                   color: AppColors.PrimaryColor,

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:ses_finance/configurations/BigText.dart';
 import 'package:ses_finance/configurations/SmallText.dart';
+import 'package:ses_finance/main_page.dart';
 import 'package:ses_finance/models/events.dart';
 import 'package:ses_finance/pages/events/single_event.dart';
 import 'package:ses_finance/pages/loading.dart';
@@ -44,7 +45,22 @@ class _AllEventsState extends State<AllEvents> {
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  BigText(text: "All Events"),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      BigText(text: "All Events"),
+                      IconButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MainPage(
+                                      homePageIndex: 4, eventPageIndex: 0)));
+                        },
+                        icon: const Icon(Icons.add),
+                      ),
+                    ],
+                  ),
                   const SizedBox(
                     height: 15,
                   ),

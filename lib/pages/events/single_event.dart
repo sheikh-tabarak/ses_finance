@@ -68,9 +68,7 @@ class _SingleEventState extends State<SingleEvent> {
                           IconButton(
                             onPressed: () {
                               setState(() {
-                                setState(() {
-                                  _addEvent = true;
-                                });
+                                _addEvent = true;
                               });
                             },
                             icon: const Icon(Icons.add),

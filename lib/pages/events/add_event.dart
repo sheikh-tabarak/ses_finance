@@ -1,8 +1,9 @@
-// ignore_for_file: prefer_final_fields
+// ignore_for_file: prefer_final_fields, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:ses_finance/configurations/AppColors.dart';
 import 'package:ses_finance/configurations/BigText.dart';
+import 'package:ses_finance/main_page.dart';
 import 'package:ses_finance/models/events.dart';
 import 'package:ses_finance/pages/loading.dart';
 import 'package:ses_finance/widgets/PrimaryInputField.dart';
@@ -19,6 +20,7 @@ class AddEvent extends StatefulWidget {
 class _AddEventState extends State<AddEvent> {
   bool _isLoading = false;
   bool _isSuccess = false;
+  bool _titleEmpty = false;
   DateTime _selectedDate = DateTime.now();
   TextEditingController _dateCtrl = TextEditingController();
   TextEditingController _titleCtrl = TextEditingController();
@@ -94,9 +96,12 @@ class _AddEventState extends State<AddEvent> {
                   placeholderText: "Enter Event Title",
                   PrefixIcon: Icons.title_outlined,
                   isPassword: false,
-                  ErrorMessage: "",
+                  ErrorMessage:
+                      _titleEmpty == true ? "Title Can't be Empty" : "",
                   TextEditControl: _titleCtrl,
-                  onChange: () {}),
+                  onChange: () {
+                    _titleEmpty = false;
+                  }),
               PrimaryInputField(
                   isExpanded: true,
                   placeholderText: "Enter Event Description",
@@ -112,16 +117,29 @@ class _AddEventState extends State<AddEvent> {
                       _isLoading = true;
                     });
 
-                    await AddNewEvent(_titleCtrl.text, _descCtrl.text,
-                        _selectedDate.toString());
+                    if (_titleCtrl.text == "") {
+                      setState(() {
+                        _isLoading = false;
+                        _titleEmpty = true;
+                      });
+                    } else {
+                      await AddNewEvent(_titleCtrl.text, _descCtrl.text,
+                          _selectedDate.toString());
 
-                    setState(() {
-                      _titleCtrl.text = "";
-                      _descCtrl.text = "";
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MainPage(
+                                  homePageIndex: 1, eventPageIndex: 0)));
 
-                      _isSuccess = true;
-                      _isLoading = false;
-                    });
+                      setState(() {
+                        _titleCtrl.text = "";
+                        _descCtrl.text = "";
+
+                        _isSuccess = true;
+                        _isLoading = false;
+                      });
+                    }
                   },
                   text: "Add Event",
                   color: AppColors.PrimaryColor,

@@ -1,6 +1,5 @@
-// ignore_for_file: prefer_final_fields, use_build_context_synchronously, deprecated_member_use, unused_field
+// ignore_for_file: prefer_final_fields, use_build_context_synchronously, deprecated_member_use, unused_field, non_constant_identifier_names, sized_box_for_whitespace
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ses_finance/configurations/AppColors.dart';
 import 'package:ses_finance/configurations/BigText.dart';

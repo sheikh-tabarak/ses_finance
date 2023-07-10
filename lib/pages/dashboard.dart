@@ -17,9 +17,24 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  // List<String> _EventName = [];
   double _TIn = 0;
   double _TOut = 0;
   double _GT = 0;
+
+  // Future _getEventName(id) async {
+  //   await FirebaseFirestore.instance
+  //       .collection("user")
+  //       .doc("SESSION_2022_23")
+  //       .collection("events")
+  //       .doc(id)
+  //       .get()
+  //       .then((value) {
+  //     _EventName.add(value["Eventtitle"]);
+  //     //  _EventName = value["Eventtitle"];
+  //     // print();
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -173,19 +188,30 @@ class _DashboardState extends State<Dashboard> {
         StreamBuilder(
           stream: All_Transactions(),
           builder: (context, snapshot) {
-            // for (var i = 0; i < snapshot.data!.docs.length; i++) {
-
-            // }
-
             if (snapshot.hasData) {
               if (snapshot.data!.docs.isNotEmpty) {
-                snapshot.data!.docs.forEach((e) {
-                  getEventNamebyId(e["EventId"])
-                      .then((value) => print("This is Name of Event: $value"));
-                });
+                // snapshot.data!.docs.forEach((e) async {
+                //   String EventName = "";
+                // await FirebaseFirestore.instance
+                //     .collection("user")
+                //     .doc("SESSION_2022_23")
+                //     .collection("events")
+                //     .doc(e["EventId"])
+                //     .get()
+                //     .then((value) {
+
+                //   print(value["Eventtitle"]);
+                // });
+
+                // //  _EventName = EventName;
+                // });
                 return ListView(
                   shrinkWrap: true,
                   children: snapshot.data!.docs.map((e) {
+                    //   _getEventName(e["EventId"]);
+                    // _Event_Name = "";
+                    // print("this: $_EventName");
+
                     return Container(
                         padding: const EdgeInsets.all(12),
                         margin: const EdgeInsets.only(bottom: 5),
@@ -212,7 +238,7 @@ class _DashboardState extends State<Dashboard> {
                                 ),
                                 SmallText(
                                     text:
-                                        "${e["TransactionMode"] == "Subtract" ? "Decrement" : "Increment"} in Sport Gala"),
+                                        "${e["TransactionMode"] == "Subtract" ? "Decrement" : "Increment"} in SES"),
                               ],
                             ),
                             Row(
