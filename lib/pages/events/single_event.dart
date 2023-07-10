@@ -352,6 +352,7 @@ class _SingleEventState extends State<SingleEvent> {
                       if (snapshot.hasData) {
                         if (snapshot.data!.docs.isNotEmpty) {
                           return ListView(
+                            physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
                             children: snapshot.data!.docs.map((e) {
                               return Container(

@@ -37,11 +37,7 @@ class _MainPageState extends State<MainPage> {
                   },
                 ))
             : null,
-        endDrawer: Responsive.isMobile(context)
-            ? SizedBox(
-                width: MediaQuery.of(context).size.width * 0.8,
-                child: const Text("This is profile space"))
-            : null,
+        endDrawer: Responsive.isMobile(context) ? const Profile() : null,
         body: SafeArea(
           child: Column(
             //   alignment: Alignment.bottomCenter,
@@ -79,25 +75,6 @@ class _MainPageState extends State<MainPage> {
                     ),
                 ],
               ),
-              // Positioned(
-              //   bottom: 0,
-              //   child: Expanded(
-              //     child: Container(
-              //       decoration: BoxDecoration(
-              //         color: Colors.black,
-              //       ),
-              //       padding: const EdgeInsets.all(8.0),
-              //       child: Row(
-              //         mainAxisAlignment: MainAxisAlignment.center,
-              //         children: [
-              //           SmallText(
-              //               text:
-              //                   "2023 Copyrights All Rights Reserved | Developed by Sheikhtabarak")
-              //         ],
-              //       ),
-              //     ),
-              //   ),
-              // )
             ],
           ),
         ));

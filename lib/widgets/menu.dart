@@ -123,6 +123,18 @@ class _MenuState extends State<Menu> {
                 color: Colors.white,
               ),
             ),
+            !Responsive.isDesktop(context)
+                ? ListTile(
+                    onTap: () async {
+                      widget.scaffoldKey.currentState!.openEndDrawer();
+                    },
+                    leading: const Icon(Icons.people),
+                    title: SmallText(
+                      text: "Hirareicy Details",
+                      color: Colors.white,
+                    ),
+                  )
+                : const SizedBox(),
             ListTile(
               onTap: () async {
                 await signout();

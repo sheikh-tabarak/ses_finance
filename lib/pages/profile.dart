@@ -28,9 +28,22 @@ class Profile extends StatelessWidget {
                 height: 20,
               ),
 
-              BigText(
-                text: "Hierarchy Details",
-                color: Colors.white,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  BigText(
+                    text: "Hierarchy Details",
+                    color: Colors.white,
+                  ),
+                  !Responsive.isDesktop(context)
+                      ? IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(Icons.close),
+                        )
+                      : const SizedBox(),
+                ],
               ),
               const SizedBox(
                 height: 20,

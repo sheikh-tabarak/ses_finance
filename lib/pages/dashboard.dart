@@ -7,6 +7,7 @@ import 'package:ses_finance/configurations/SmallText.dart';
 import 'package:ses_finance/const.dart';
 import 'package:ses_finance/models/events.dart';
 import 'package:ses_finance/models/transaction.dart';
+import 'package:ses_finance/responsive.dart';
 import 'package:ses_finance/widgets/no_data.dart';
 
 class Dashboard extends StatefulWidget {
@@ -21,20 +22,6 @@ class _DashboardState extends State<Dashboard> {
   double _TIn = 0;
   double _TOut = 0;
   double _GT = 0;
-
-  // Future _getEventName(id) async {
-  //   await FirebaseFirestore.instance
-  //       .collection("user")
-  //       .doc("SESSION_2022_23")
-  //       .collection("events")
-  //       .doc(id)
-  //       .get()
-  //       .then((value) {
-  //     _EventName.add(value["Eventtitle"]);
-  //     //  _EventName = value["Eventtitle"];
-  //     // print();
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -60,26 +47,34 @@ class _DashboardState extends State<Dashboard> {
                 return Wrap(
                   children: [
                     Container(
-                      margin: const EdgeInsets.all(15),
+                      padding: Responsive.isDesktop(context)
+                          ? const EdgeInsets.all(40)
+                          : const EdgeInsets.all(15),
+                      margin: Responsive.isDesktop(context)
+                          ? const EdgeInsets.all(15)
+                          : const EdgeInsets.all(5),
                       decoration: BoxDecoration(
                         border: Border.all(width: 2, color: Colors.white),
                         borderRadius: BorderRadius.circular(10),
                         color: cardBackgroundColor,
                       ),
-                      padding: const EdgeInsets.all(40),
+
                       child: Column(
                         children: [
-                          const Icon(
+                          Icon(
+                            size: Responsive.isDesktop(context) ? 18 : 12,
                             Icons.attach_money_sharp,
                           ),
                           const SizedBox(
                             height: 10,
                           ),
                           BigText(
+                            size: Responsive.isDesktop(context) ? 18 : 13,
                             text: "$_GT PKR",
                             color: Colors.white,
                           ),
                           SmallText(
+                            size: Responsive.isDesktop(context) ? 12 : 10,
                             text: "Balance",
                             color: const Color.fromARGB(255, 209, 209, 209),
                           )
@@ -88,26 +83,35 @@ class _DashboardState extends State<Dashboard> {
                       //  ),
                     ),
                     Container(
-                      margin: const EdgeInsets.all(15),
+                      padding: Responsive.isDesktop(context)
+                          ? const EdgeInsets.all(40)
+                          : const EdgeInsets.all(15),
+                      margin: Responsive.isDesktop(context)
+                          ? const EdgeInsets.all(15)
+                          : const EdgeInsets.all(5),
+
                       decoration: BoxDecoration(
                         border: Border.all(width: 2, color: Colors.green),
                         borderRadius: BorderRadius.circular(10),
                         color: cardBackgroundColor,
                       ),
-                      padding: const EdgeInsets.all(40),
+
                       child: Column(
                         children: [
-                          const Icon(
+                          Icon(
+                            size: Responsive.isDesktop(context) ? 18 : 12,
                             Icons.arrow_upward,
                           ),
                           const SizedBox(
                             height: 10,
                           ),
                           BigText(
+                            size: Responsive.isDesktop(context) ? 18 : 13,
                             text: "$_TIn PKR",
                             color: Colors.white,
                           ),
                           SmallText(
+                            size: Responsive.isDesktop(context) ? 12 : 10,
                             text: "Total Incoming",
                             color: const Color.fromARGB(255, 209, 209, 209),
                           )
@@ -116,25 +120,34 @@ class _DashboardState extends State<Dashboard> {
                       //  ),
                     ),
                     Container(
-                      margin: const EdgeInsets.all(15),
+                      padding: Responsive.isDesktop(context)
+                          ? const EdgeInsets.all(40)
+                          : const EdgeInsets.all(15),
+                      margin: Responsive.isDesktop(context)
+                          ? const EdgeInsets.all(15)
+                          : const EdgeInsets.all(5),
 
                       decoration: BoxDecoration(
                         border: Border.all(width: 2, color: Colors.red),
                         borderRadius: BorderRadius.circular(10),
                         color: cardBackgroundColor,
                       ),
-                      padding: const EdgeInsets.all(40),
                       child: Column(
                         children: [
-                          const Icon(Icons.arrow_downward),
+                          Icon(
+                            Icons.arrow_downward,
+                            size: Responsive.isDesktop(context) ? 18 : 12,
+                          ),
                           const SizedBox(
                             height: 10,
                           ),
                           BigText(
+                            size: Responsive.isDesktop(context) ? 18 : 13,
                             text: "$_TOut PKR",
                             color: Colors.white,
                           ),
                           SmallText(
+                            size: Responsive.isDesktop(context) ? 12 : 10,
                             text: "Total Expanse",
                             color: const Color.fromARGB(255, 209, 209, 209),
                           )
@@ -152,6 +165,9 @@ class _DashboardState extends State<Dashboard> {
             }
           },
         ),
+        const SizedBox(
+          height: 10,
+        ),
         BigText(text: "Recent Transactions"),
         const SizedBox(
           height: 15,
@@ -168,11 +184,6 @@ class _DashboardState extends State<Dashboard> {
                 Row(
                   children: [
                     SmallText(text: "Date - Time : "),
-                    // Icon(
-                    //   Icons.circle,
-                    //   color:
-                    //       const Color.fromARGB(255, 255, 255, 255),
-                    // ),
                     const SizedBox(
                       width: 10,
                     ),
@@ -190,28 +201,10 @@ class _DashboardState extends State<Dashboard> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               if (snapshot.data!.docs.isNotEmpty) {
-                // snapshot.data!.docs.forEach((e) async {
-                //   String EventName = "";
-                // await FirebaseFirestore.instance
-                //     .collection("user")
-                //     .doc("SESSION_2022_23")
-                //     .collection("events")
-                //     .doc(e["EventId"])
-                //     .get()
-                //     .then((value) {
-
-                //   print(value["Eventtitle"]);
-                // });
-
-                // //  _EventName = EventName;
-                // });
                 return ListView(
+                  physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   children: snapshot.data!.docs.map((e) {
-                    //   _getEventName(e["EventId"]);
-                    // _Event_Name = "";
-                    // print("this: $_EventName");
-
                     return Container(
                         padding: const EdgeInsets.all(12),
                         margin: const EdgeInsets.only(bottom: 5),
@@ -228,11 +221,6 @@ class _DashboardState extends State<Dashboard> {
                                     text: DateFormat("dd | MMMM - hh:mm :")
                                         .format(DateTime.parse(
                                             e["TransactionDate"].toString()))),
-                                // Icon(
-                                //   Icons.circle,
-                                //   color:
-                                //       const Color.fromARGB(255, 255, 255, 255),
-                                // ),
                                 const SizedBox(
                                   width: 10,
                                 ),
@@ -264,68 +252,8 @@ class _DashboardState extends State<Dashboard> {
                                       )
                               ],
                             ),
-                            // Row(
-                            //   mainAxisAlignment: MainAxisAlignment.end,
-                            //   children: [
-                            //     SmallText(
-                            //       text: e["TransactionMode"] == "Add"
-                            //           ? e["TransactionAmount"].toString()
-                            //           : "-",
-                            //       color: e["TransactionMode"] == "Add"
-                            //           ? Colors.green
-                            //           : Colors.grey,
-                            //     ),
-                            //     SizedBox(
-                            //       width: 2,
-                            //     ),
-                            //     e["TransactionMode"] == "Add"
-                            //         ? Icon(
-                            //             Icons.arrow_upward,
-                            //             color: Colors.green,
-                            //           )
-                            //         : SizedBox()
-                            //   ],
-                            // ),
                           ],
-                        )
-                        // ListTile(
-                        //   onTap: () {
-                        //     //    print("Expanse ${index + 1}");
-                        //   },
-                        //   title: BigText(
-                        //     text: e["TransactionMode"] == "Subtract"
-                        //         ? "Expanse"
-                        //         : "Income",
-                        //     color: Colors.white,
-                        //   ),
-                        //   subtitle: SmallText(text: e["TransactionDescription"]),
-                        //   leading: Column(
-                        //     crossAxisAlignment: CrossAxisAlignment.center,
-                        //     children: [
-                        //       SmallText(
-                        //           text: DateFormat("dd | MMMM").format(
-                        //               DateTime.parse(
-                        //                   e["TransactionDate"].toString()))),
-                        //       BigText(
-                        //         text: DateFormat("hh:mm").format(DateTime.parse(
-                        //             e["TransactionDate"].toString())),
-                        //         //size: 8,
-                        //       ),
-                        //     ],
-                        //   ),
-
-                        //   // Icon(Icons.event),
-                        //   trailing: BigText(
-                        //     text: e["TransactionMode"] == "Subtract"
-                        //         ? "-${e["TransactionAmount"].toString()}"
-                        //         : e["TransactionAmount"].toString(),
-                        //     color: e["TransactionMode"] == "Subtract"
-                        //         ? Colors.red
-                        //         : Colors.green,
-                        //   ),
-                        // ),
-
-                        );
+                        ));
                   }).toList(),
                 );
               } else {
